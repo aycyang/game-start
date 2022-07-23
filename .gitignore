@@ -1,1 +1,5 @@
-build/
+build*/
+install*/
+out/
+.vs/
+.cache/
