@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 3.21)
+# x_vcpkg_install_local_dependencies requires CMake >=3.14
+# NOTE(2022-07-23): I would go higher but Ubuntu 20.04 LTS only has CMake 3.16.3
+cmake_minimum_required(VERSION 3.14)
 
 set(PROJECT_NAME MyGame)
 
@@ -26,12 +28,20 @@ IF(EMSCRIPTEN)
   # Observed with Emscripten version 3.1.7
   target_link_options(${PROJECT_NAME} PRIVATE -sUSE_SDL=2)
   target_link_options(${PROJECT_NAME} PRIVATE -sUSE_SDL_IMAGE=2)
+  target_link_options(${PROJECT_NAME} PRIVATE -sUSE_SDL_TTF=2)
   target_link_options(${PROJECT_NAME} PRIVATE -sUSE_SDL_MIXER=2)
   target_link_options(${PROJECT_NAME} PRIVATE -sUSE_VORBIS=1)
-  target_link_options(${PROJECT_NAME} PRIVATE -sUSE_SDL_TTF=2)
   target_link_options(${PROJECT_NAME} PRIVATE --use-preload-plugins)
   target_link_options(${PROJECT_NAME} PRIVATE --preload-file assets)
   configure_file(index.html index.html COPYONLY)
+  set(CMAKE_INSTALL_PREFIX install)
+  install(FILES
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.wasm
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.js
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.data
+    $<TARGET_FILE_DIR:${PROJECT_NAME}>/index.html
+    DESTINATION .
+  )
 ELSEIF(WIN32)
   # Prerequisite: 'vcpkg install' all of the following packages
   # For some reason the naming conventions of these packages aren't very
@@ -51,18 +61,18 @@ ELSEIF(WIN32)
 
   install(TARGETS ${PROJECT_NAME} DESTINATION .)
   install(DIRECTORY assets DESTINATION .)
-  # vcpkg already injects code into the add_library() CMake function to copy
-  # the required DLLs into the build directory, but it doesn't do the same for
-  # the install directory. Here I'm using the experimental function
-  # x_vcpkg_install_local_dependencies to fix that inconsistency.
-  # Tested on vcpkg version 2022-07-14-fb7e3b1bb3b1ca185fffe2be36b2fbc53198360f
+  # NOTE (2022-07-23): vcpkg already injects code into CMake's native
+  # add_library() function to copy the required DLLs into the build directory,
+  # but it doesn't do the same for the install directory. Here I'm using the
+  # experimental function x_vcpkg_install_local_dependencies to fix that
+  # inconsistency.
   x_vcpkg_install_local_dependencies(TARGETS ${PROJECT_NAME} DESTINATION .)
 ELSEIF(UNIX)
   # TODO not implemented
 ENDIF()
 
-# CPack can generate a zip of the compiled binaries. It is equivalent to doing
-# a CMake install and adding the contents of the install directory to a zip.
-# Example usage: cd build/; cpack -G ZIP
+# CPack can generate a zip of the compiled binaries. It is equivalent to
+# doing a CMake install and adding the contents of the install directory to a
+# zip.  Example usage: cd build/; cpack -G ZIP
 set(CPACK_INCLUDE_TOPLEVEL_DIRECTORY OFF)
 include(CPack)
