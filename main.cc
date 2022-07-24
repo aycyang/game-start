@@ -28,6 +28,7 @@ class GameData {
   SDL_Rect textRect;
 
   bool is_mouse_down;
+  bool is_space_down;
 };
 
 bool mainLoop(double dt, GameData& g) {
@@ -36,12 +37,32 @@ bool mainLoop(double dt, GameData& g) {
   if (event.type == SDL_QUIT) {
     return false;
   }
+  if (event.type == SDL_WINDOWEVENT) {
+    switch(event.window.event) {
+      case SDL_WINDOWEVENT_FOCUS_GAINED:
+      // TODO unpause
+      break;
+      case SDL_WINDOWEVENT_FOCUS_LOST:
+      // TODO pause
+      break;
+    }
+  }
   if (event.type == SDL_MOUSEBUTTONDOWN) {
     Mix_PlayChannel(-1, g.sfx_placeholder, 0);
     g.is_mouse_down = true;
   }
   if (event.type == SDL_MOUSEBUTTONUP) {
     g.is_mouse_down = false;
+  }
+  if (event.type == SDL_KEYDOWN) {
+    if (event.key.keysym.sym == SDLK_SPACE) {
+      g.is_space_down = true;
+    }
+  }
+  if (event.type == SDL_KEYUP) {
+    if (event.key.keysym.sym == SDLK_SPACE) {
+      g.is_space_down = false;
+    }
   }
 
   g.rect.x = kViewportWidth / 2 - g.rect.w / 2;
@@ -52,6 +73,9 @@ bool mainLoop(double dt, GameData& g) {
 
   g.textRect.x = kViewportWidth / 2 - g.textRect.w / 2;
   g.textRect.y = kViewportHeight / 2 - g.textRect.h / 2 - g.rect.h / 2 - 64;
+  if (g.is_space_down) {
+    g.textRect.y -= 12;
+  }
 
   SDL_RenderClear(g.renderer);
 

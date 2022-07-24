@@ -33,7 +33,7 @@ IF(EMSCRIPTEN)
   target_link_options(${PROJECT_NAME} PRIVATE -sUSE_VORBIS=1)
   target_link_options(${PROJECT_NAME} PRIVATE --use-preload-plugins)
   target_link_options(${PROJECT_NAME} PRIVATE --preload-file assets)
-  configure_file(index.html index.html COPYONLY)
+  configure_file(index.html index.html @ONLY)
   set(CMAKE_INSTALL_PREFIX install)
   install(FILES
     $<TARGET_FILE_DIR:${PROJECT_NAME}>/${PROJECT_NAME}.wasm
