@@ -11,13 +11,21 @@
 1. Optional: install the compiled binaries: Build > Install ...
 1. Optional: create a zip of the compiled binaries: `cpack -G ZIP --config build-x64-Release/CPackConfig.cmake`
 
+### Linux
+
+1. Install development dependencies: cmake, make, git
+1. Download this repository and navigate to its location in a terminal
+1. Generate build directory: `cmake -B build`
+1. Compile and link: `cmake --build build`
+1. Run game: `build/MyGame`
+
 ### Web
 
 (Tested on Linux)
 
 1. Install development dependencies: cmake, make, git, python3
 1. Install [Emscripten](https://emscripten.org/docs/getting_started/downloads.html)
-1. `git clone` this repo and `cd` into it
+1. Download this repository and navigate to its location in a terminal
 1. Generate build directory: `emcmake cmake -B build/`
 1. Compile and link: `emmake cmake --build build/`
     - Note: there is a good chance this will fail with something like `fatal error: 'SDL2/SDL.h' file not found` because some of the required ports haven't been built and for some reason Emscripten doesn't automatically build them when invoked from CMake. Explicitly build the ports first: `embuilder build sdl2 sdl2_image sdl2_mixer sdl2_ttf`

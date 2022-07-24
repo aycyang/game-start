@@ -68,7 +68,28 @@ ELSEIF(WIN32)
   # inconsistency.
   x_vcpkg_install_local_dependencies(TARGETS ${PROJECT_NAME} DESTINATION .)
 ELSEIF(UNIX)
-  # TODO not implemented
+  find_package(SDL2 REQUIRED)
+  find_package(SDL2_image REQUIRED)
+  find_package(SDL2_ttf REQUIRED)
+  find_package(SDL2_mixer REQUIRED)
+
+  target_link_libraries(${PROJECT_NAME}
+    SDL2::SDL2
+    SDL2::SDL2main
+    SDL2_image
+    SDL2_ttf
+    SDL2_mixer::SDL2_mixer
+  )
+
+  # NOTE: distribution for Linux is hard, so I'm not going to try to handle
+  # that with CMake.
+  # It can be done in an architecture-agnostic ("universal") way by bundling
+  # 32-bit and 64-bit builds and using a shell script [1] to select between them.
+  # Libraries can be bundled and loaded manually using LD_LIBRARY_PATH [2].
+  # Steam provides a container runtime [3].
+  # [1] https://gist.github.com/flibitijibibo/5365145
+  # [2] https://itch.io/docs/itch/integrating/platforms/linux.html
+  # [3] https://partner.steamgames.com/doc/store/application/platforms/linux
 ENDIF()
 
 # CPack can generate a zip of the compiled binaries. It is equivalent to
