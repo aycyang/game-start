@@ -13,7 +13,11 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 # built so that it can highlight compilation errors in your code editor
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
-add_executable(${PROJECT_NAME} main.cc)
+add_executable(${PROJECT_NAME}
+  main.cc
+  game_base.cc
+  game.cc
+)
 
 configure_file(assets/SDL_logo.png assets/SDL_logo.png COPYONLY)
 configure_file(assets/bloop.wav assets/bloop.wav COPYONLY)
@@ -33,6 +37,9 @@ IF(EMSCRIPTEN)
   target_link_options(${PROJECT_NAME} PRIVATE -sUSE_VORBIS=1)
   target_link_options(${PROJECT_NAME} PRIVATE --use-preload-plugins)
   target_link_options(${PROJECT_NAME} PRIVATE --preload-file assets)
+  target_link_options(${PROJECT_NAME} PRIVATE -sNO_DISABLE_EXCEPTION_CATCHING)
+  # For easier debugging, include debug symbols.
+  #target_link_options(${PROJECT_NAME} PRIVATE -g)
   configure_file(index.html index.html @ONLY)
   set(CMAKE_INSTALL_PREFIX install)
   install(FILES
