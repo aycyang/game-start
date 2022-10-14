@@ -3,9 +3,14 @@
 
 #include <SDL2/SDL.h>
 
-#include <iostream>
 #include <string>
 
+/**
+ * Interface used by the bootstrapping code (in main.cc) and implemented by the
+ * game logic (in game.h). See protected section for stuff you can use in the
+ * implementation. This is the contract relied upon by the bootstrapping code
+ * so I don't recommend changing this.
+ */
 class GameBase {
  public:
   GameBase();

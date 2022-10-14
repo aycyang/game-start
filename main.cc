@@ -1,9 +1,13 @@
-#include <SDL2/SDL.h>
-#include <SDL2/SDL_image.h>
-#include <SDL2/SDL_mixer.h>
-#include <SDL2/SDL_ttf.h>
+/**
+ * main.cc
+ *
+ * This is the entrypoint to the application. Contains mostly
+ * platform-dependent scaffolding and delegates to an implementation of the
+ * GameBase interface for all game logic. The codepath differs when compiling
+ * to WebAssembly with Emscripten.
+ */
 
-#include <iostream>
+#include <SDL2/SDL.h>
 
 #ifdef __EMSCRIPTEN__
 #include <emscripten.h>
@@ -59,7 +63,8 @@ int main(int argc, char** argv) {
     dt = ticks - prevTicks;
     prevTicks = ticks;
     shouldContinue = mainLoop(dt, &game);
-    SDL_Delay(17);
+    double elapsed = SDL_GetTicks() - ticks;
+    SDL_Delay(std::max(0, static_cast<int>(16.667 - elapsed)));
   }
 #endif
 

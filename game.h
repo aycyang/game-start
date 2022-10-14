@@ -8,6 +8,11 @@
 
 #include "game_base.h"
 
+/**
+ * Put game logic here, primarily in Update(), Render(), and HandleEvent().
+ * Feel free to add new methods for common procedures and new fields for
+ * storing game state.
+ */
 class Game : public GameBase {
  public:
   Game();

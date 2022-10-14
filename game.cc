@@ -5,8 +5,6 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 
-#include <iostream>
-
 Game::Game() : is_mouse_down_(false), is_space_down_(false) {
   {
     SDL_Surface* surface = IMG_Load("assets/SDL_logo.png");
