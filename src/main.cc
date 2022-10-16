@@ -34,7 +34,7 @@ EM_BOOL emLoop(double time, void* g) {
   // entire execution of the program -- when control first passes through its
   // declaration -- i.e. subsequent calls to this function will not reset this
   // value.
-  static double prevTime = 0;
+  static double prevTime = time;
 
   const double dt = time - prevTime;
   prevTime = time;

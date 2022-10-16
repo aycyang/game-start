@@ -5,11 +5,13 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 
+#include <Log/log.h>
+
 Game::Game() : is_mouse_down_(false), is_space_down_(false) {
   {
     SDL_Surface* surface = IMG_Load("assets/SDL_logo.png");
     if (!surface) {
-      Log("IMG_Load", IMG_GetError());
+      Log("IMG_Load") << IMG_GetError();
       Crash();
     }
     SDL_GetClipRect(surface, &rect_);
@@ -19,13 +21,13 @@ Game::Game() : is_mouse_down_(false), is_space_down_(false) {
 
   sfx_placeholder_ = Mix_LoadWAV("assets/bloop.wav");
   if (!sfx_placeholder_) {
-    Log("Mix_LoadWAV", Mix_GetError());
+    Log("Mix_LoadWAV") << Mix_GetError();
     Crash();
   }
 
   font_ = TTF_OpenFont("assets/Inconsolata.ttf", 48);
   if (!font_) {
-    Log("TTF_OpenFont", TTF_GetError());
+    Log("TTF_OpenFont") << TTF_GetError();
   }
 
   {

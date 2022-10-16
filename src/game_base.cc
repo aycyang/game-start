@@ -5,6 +5,8 @@
 #include <SDL2/SDL_mixer.h>
 #include <SDL2/SDL_ttf.h>
 
+#include <Log/log.h>
+
 #include <exception>
 #include <iostream>
 
@@ -15,27 +17,28 @@ GameBase::GameBase()
       renderer_(nullptr),
       should_quit_(false) {
   if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_AUDIO) != 0) {
-    Log("SDL_Init", SDL_GetError());
+    Log("SDL_Init") << SDL_GetError();
     Crash();
   }
 
   if (SDL_CreateWindowAndRenderer(screen_width_, screen_height_, 0, &window_,
                                   &renderer_)) {
-    Log("SDL_CreateWindowAndRenderer", SDL_GetError());
+    Log("SDL_CreateWindowAndRenderer") << SDL_GetError();
     Crash();
   }
 
   if (TTF_Init() == -1) {
-    Log("TTF_Init", TTF_GetError());
+    Log("TTF_Init") << TTF_GetError();
   }
 
   if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 1024) == -1) {
-    Log("Mix_OpenAudio", Mix_GetError());
+    Log("Mix_OpenAudio") << Mix_GetError();
     Crash();
   }
 }
 
 GameBase::~GameBase() {
+  Log("GameBase dtor");
   TTF_Quit();
 
   Mix_CloseAudio();
@@ -56,12 +59,4 @@ void GameBase::QuitSoon() {
 
 void GameBase::Crash() {
   throw std::exception();
-}
-
-void GameBase::Log(std::string s) {
-  std::cout << s << std::endl;
-}
-
-void GameBase::Log(std::string a, std::string b) {
-  std::cout << a << ": " << b << std::endl;
 }

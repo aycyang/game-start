@@ -3,8 +3,6 @@
 
 #include <SDL2/SDL.h>
 
-#include <string>
-
 /**
  * Interface used by the bootstrapping code (in main.cc) and implemented by the
  * game logic (in game.h). See protected section for stuff you can use in the
@@ -23,8 +21,6 @@ class GameBase {
  protected:
   void QuitSoon();
   void Crash();
-  void Log(std::string);
-  void Log(std::string, std::string);
   int screen_width_;
   int screen_height_;
   SDL_Window* window_;

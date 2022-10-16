@@ -14,10 +14,14 @@ set(CMAKE_CXX_STANDARD_REQUIRED YES)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 add_executable(${PROJECT_NAME}
-  main.cc
-  game_base.cc
-  game.cc
+  src/main.cc
+  src/game_base.cc
+  src/game.cc
 )
+
+add_subdirectory(lib/Log)
+target_include_directories(${PROJECT_NAME} PRIVATE lib)
+target_link_libraries(${PROJECT_NAME} Log)
 
 configure_file(assets/SDL_logo.png assets/SDL_logo.png COPYONLY)
 configure_file(assets/bloop.wav assets/bloop.wav COPYONLY)
