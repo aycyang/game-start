@@ -55,18 +55,16 @@ IF(EMSCRIPTEN)
   )
 ELSEIF(WIN32)
   # Prerequisite: 'vcpkg install' all of the following packages
-  # For some reason the naming conventions of these packages aren't very
-  # consistent. That's just how it is on vcpkg.
   # Tested with Visual Studio 2022 and vcpkg.
   find_package(SDL2 REQUIRED)
-  find_package(sdl2-image REQUIRED)
-  find_package(sdl2-ttf REQUIRED)
+  find_package(SDL2_image REQUIRED)
+  find_package(SDL2_ttf REQUIRED)
   find_package(SDL2_mixer REQUIRED)
   target_link_libraries(${PROJECT_NAME}
     SDL2::SDL2
     SDL2::SDL2main
-    SDL2::SDL2_image
-    SDL2::SDL2_ttf
+    SDL2_image::SDL2_image
+    SDL2_ttf::SDL2_ttf
     SDL2_mixer::SDL2_mixer
   )
 
