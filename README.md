@@ -13,8 +13,14 @@
 
 ### Linux
 
+(Tested on: Arch Linux, WSL w/ Ubuntu 22.04 LTS)
+
 1. Install development dependencies: cmake, make, git
+1. Install project dependencies
+    - On Arch Linux, these are: sdl2, sdl2_image, sdl2_ttf, sdl2_mixer
+    - On Ubuntu 22.04 LTS, these are: libsdl2-dev, libsdl2-image-dev, libsdl2-ttf-dev, libsdl2-mixer-dev
 1. Download this repository and navigate to its location in a terminal
+    - Be sure to `git clone --recursive` or `git submodule update --init` in order to use <https://github.com/aminosbh/sdl2-cmake-modules>
 1. Generate build directory: `cmake -B build`
 1. Compile and link: `cmake --build build`
 1. Run game: `build/MyGame`

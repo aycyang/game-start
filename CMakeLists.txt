@@ -77,17 +77,20 @@ ELSEIF(WIN32)
   # inconsistency.
   x_vcpkg_install_local_dependencies(TARGETS ${PROJECT_NAME} DESTINATION .)
 ELSEIF(UNIX)
+  # Uses aminosbh/sdl2-cmake-modules to register dependencies with CMake.
+  # Arch Linux actually doesn't need this, but the Debian repositories don't
+  # distribute any CMake config files with these libraries, so we need to
+  # provide them ourselves.
+  list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake/sdl2")
   find_package(SDL2 REQUIRED)
   find_package(SDL2_image REQUIRED)
   find_package(SDL2_ttf REQUIRED)
   find_package(SDL2_mixer REQUIRED)
-
   target_link_libraries(${PROJECT_NAME}
-    SDL2::SDL2
-    SDL2::SDL2main
-    SDL2_image
-    SDL2_ttf
-    SDL2_mixer::SDL2_mixer
+    SDL2::Main
+    SDL2::Image
+    SDL2::TTF
+    SDL2::Mixer
   )
 
   # NOTE: distribution for Linux is hard, so I'm not going to try to handle
