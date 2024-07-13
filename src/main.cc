@@ -7,6 +7,8 @@
  * to WebAssembly with Emscripten.
  */
 
+#include <algorithm>
+
 #include <SDL2/SDL.h>
 
 #ifdef __EMSCRIPTEN__
